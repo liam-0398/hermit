@@ -57,7 +57,7 @@
       ((equal (first *input*) "###") (view-history))
       ((equal (first *input*) "!!!") (sb-impl::toplevel-repl nil)) ; Drop to REPL
 
-      (t
+     (t
         (handler-case
           (sb-ext:run-program (first *input*) (rest *input*) :output t :input t :wait t :search t)
         (error (e)
@@ -67,7 +67,7 @@
   (loop do
     (format t ">> ")
     (force-output)
-    (setf *input* (split-string (cl-readline:readline)))
+    (setf *input* (split-string (cl-readline:readline :add-history t)))
     (unless (equal (first *input*) "###")
       (push *input* *history*))
 
@@ -77,6 +77,6 @@
 
 (defun main () (prompt))
 
-(main)
-;(sb-ext:save-lisp-and-die "hermit" :toplevel #'main :executable t)
+;(main)
+(sb-ext:save-lisp-and-die "hermit" :toplevel #'main :executable t)
 ;comment main and uncomment line above then load in sbcl to compile to standalone executable
